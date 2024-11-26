@@ -60,6 +60,14 @@ class Aluno(db.Model):
     sobrenome = db.Column(db.String(50), nullable=False)
     turma = db.Column(db.String(50), nullable=False)
     disciplinas = db.Column(db.String(200), nullable=False)
+    ra = db.Column(db.String(20), unique=True, nullable=False)  # RA único
+
+    def __init__(self, nome, sobrenome, turma, disciplinas, ra):
+        self.nome = nome
+        self.sobrenome = sobrenome
+        self.turma = turma
+        self.disciplinas = disciplinas
+        self.ra = ra
 
 # Visão do modelo Aluno para o painel administrativo
 class AlunoModelView(ModelView):
@@ -85,10 +93,22 @@ def listar_alunos():
 @app.route('/alunos', methods=['POST'])
 def adicionar_aluno():
     data = request.get_json()
-    novo_aluno = Aluno(nome=data['nome'], sobrenome=data['sobrenome'], turma=data['turma'], disciplinas=data['disciplinas'])
+
+    aluno_existente = Aluno.query.filter_by(ra=data['ra']).first()
+    if aluno_existente:
+        return jsonify({'message': 'Aluno com este RA já existe!'}), 400
+
+    novo_aluno = Aluno(
+        nome=data['nome'],
+        sobrenome=data['sobrenome'],
+        turma=data['turma'],
+        disciplinas=data['disciplinas'],
+        ra=data['ra']
+    )
+
     db.session.add(novo_aluno)
     db.session.commit()
-    logger.info(f"Aluno {data['nome']} {data['sobrenome']} adicionado com sucesso!")
+    logger.info(f"Aluno {data['nome']} {data['sobrenome']} (RA: {data['ra']}) adicionado com sucesso!")
     return jsonify({'message': 'Aluno adicionado com sucesso!'}), 201
 
 if __name__ == '__main__':
