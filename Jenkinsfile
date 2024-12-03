@@ -20,14 +20,31 @@ pipeline {
                 script {
                     try {
                         sh '''
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install -r flask/requirements.txt
-                        FLASK_ENV=testing python -m unittest discover -s flask -p "test_*.py"
+                            python3 -m venv venv
+                            . venv/bin/activate
+                            pip install -r flask/requirements.txt
+                            FLASK_ENV=testing python -m unittest discover -s flask -p "test_*.py"
                         '''
                     } catch (Exception e) {
                         echo "Erro ao rodar os testes: ${e.getMessage()}"
                         error "Falha nos testes unitários."
+                    }
+                }
+            }
+        }
+
+        stage('Build de Imagens Docker') {
+            steps {
+                echo 'Criando imagens Docker...'
+                script {
+                    try {
+                        sh '''
+                            docker-compose down || true
+                            docker-compose build
+                        '''
+                    } catch (Exception e) {
+                        echo "Erro ao criar as imagens Docker: ${e.getMessage()}"
+                        error "Falha no build das imagens Docker."
                     }
                 }
             }
