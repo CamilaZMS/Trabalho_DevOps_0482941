@@ -17,12 +17,19 @@ pipeline {
         stage('Aplicando testes') {
             steps {
                 echo 'Rodando testes unitários...'
-                sh '''
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install -r flask/requirements.txt
-                FLASK_ENV=testing python -m unittest discover -s flask -p "test_*.py"
-                '''
+                script {
+                    try {
+                        sh '''
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install -r flask/requirements.txt
+                        FLASK_ENV=testing python -m unittest discover -s flask -p "test_*.py"
+                        '''
+                    } catch (Exception e) {
+                        echo "Erro ao rodar os testes: ${e.getMessage()}"
+                        error "Falha nos testes unitários."
+                    }
+                }
             }
         }
     }
