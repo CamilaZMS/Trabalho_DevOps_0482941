@@ -35,7 +35,7 @@ Este projeto é uma aplicação web desenvolvida para demonstrar práticas moder
 - Docker
 - Docker Compose
 - Jenkins
-   Git
+- Git
 
 ## 🚀 Configuração e Instalação
 
