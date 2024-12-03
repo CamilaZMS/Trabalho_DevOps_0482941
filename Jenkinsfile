@@ -49,6 +49,23 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                echo 'Fazendo deploy da aplicação...'
+                script {
+                    try {
+                        sh '''
+                            docker-compose down || true
+                            docker-compose up -d
+                        '''
+                    } catch (Exception e) {
+                        echo "Erro ao realizar o deploy: ${e.getMessage()}"
+                        error "Falha no deploy da aplicação."
+                    }
+                }
+            }
+        }
     }
 
     post {
