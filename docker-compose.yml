@@ -1,8 +1,10 @@
+version: "3.8"
+
 services:
   mariadb:
     build:
-      context: .
-      dockerfile: mariadb/Dockerfile_mariadb
+      context: . # Contexto de build é o diretório atual (onde o docker-compose.yml está localizado)
+      dockerfile: mariadb/Dockerfile_mariadb # Caminho correto para o Dockerfile_mariadb dentro da pasta mariadb
     container_name: mariadb
     ports:
       - "3306:3306"
