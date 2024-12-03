@@ -56,8 +56,8 @@ pipeline {
                 script {
                     try {
                         sh '''
-                            docker-compose down || true
-                            docker-compose up -d
+                            docker-compose down -v  # Stops and removes all containers and volumes
+                            docker-compose up -d    # Restart all services
                         '''
                     } catch (Exception e) {
                         echo "Erro ao realizar o deploy: ${e.getMessage()}"
