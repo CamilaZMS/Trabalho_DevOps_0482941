@@ -19,7 +19,7 @@ services:
   flask:
     build:
       context: .
-      dockerfile: Dockerfile_flask
+      dockerfile: flask/Dockerfile_flask
     container_name: flask
     ports:
       - "5000:5000"
