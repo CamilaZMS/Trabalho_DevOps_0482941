@@ -1,4 +1,5 @@
 # Trabalho_DevOps_0482941
+- Camila Zambrana de Macedo Specalski
 
 ## Sistema de Gerenciamento de Alunos - Projeto DevOps
 
