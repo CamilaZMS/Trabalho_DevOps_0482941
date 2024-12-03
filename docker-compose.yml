@@ -1,5 +1,3 @@
-version: "3.8" # Defina a versão do Compose para evitar problemas de compatibilidade
-
 services:
   mariadb:
     build:
@@ -38,47 +36,8 @@ services:
     networks:
       - monitoring_net
 
-  prometheus:
-    image: prom/prometheus
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    depends_on:
-      - mysqld_exporter
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-    networks:
-      - monitoring_net
-
-  mysqld_exporter:
-    image: prom/mysqld-exporter
-    ports:
-      - "9104:9104"
-    environment:
-      DATA_SOURCE_NAME: "user:password@(mariadb:3306)/"
-    depends_on:
-      - mariadb
-    networks:
-      - monitoring_net
-
-  grafana:
-    build:
-      context: ./grafana
-      dockerfile: Dockerfile_grafana
-    ports:
-      - "3000:3000"
-    depends_on:
-      - prometheus
-    volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-    networks:
-      - monitoring_net
-
 volumes:
   db_data:
 
 networks:
   monitoring_net:
-    driver: bridge
