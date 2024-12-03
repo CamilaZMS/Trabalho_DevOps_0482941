@@ -33,36 +33,13 @@ pipeline {
             }
         }
 
-        stage('Cleanup Docker Resources') {
-            steps {
-                script {
-                    try {
-                        sh '''
-                            # Stop all running containers
-                            docker stop $(docker ps -a -q) || true
-                            
-                            # Remove all containers
-                            docker rm -f $(docker ps -a -q) || true
-                            
-                            # Remove all volumes
-                            docker volume prune -f
-                            
-                            # Remove all networks
-                            docker network prune -f
-                        '''
-                    } catch (Exception e) {
-                        echo "Erro na limpeza de recursos Docker: ${e.getMessage()}"
-                    }
-                }
-            }
-        }
-
         stage('Build de Imagens Docker') {
             steps {
                 echo 'Criando imagens Docker...'
                 script {
                     try {
                         sh '''
+                            docker-compose down || true
                             docker-compose build
                         '''
                     } catch (Exception e) {
@@ -79,6 +56,7 @@ pipeline {
                 script {
                     try {
                         sh '''
+                            docker-compose down || true
                             docker-compose up -d
                         '''
                     } catch (Exception e) {
