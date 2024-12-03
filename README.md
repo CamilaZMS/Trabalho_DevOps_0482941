@@ -66,13 +66,11 @@ Monitore a execução:
 
 Acompanhe os logs para verificar:
 
-Clonagem do repositório
-Execução de testes
-Build de imagens Docker
-Deploy dos serviços
-
-
-
+- Clonagem do repositório
+- Execução de testes
+- Build de imagens Docker
+- Deploy dos serviços
+- Checar status monitoramento
 
 Verifique o status final da pipeline:
 
