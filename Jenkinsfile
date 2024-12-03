@@ -21,7 +21,7 @@ pipeline {
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install -r flask/requirements.txt
-                FLASK_ENV=testing python -m unittest discover -s . -p "test_*.py"
+                FLASK_ENV=testing python -m unittest discover -s flask -p "test_*.py"
                 '''
             }
         }
