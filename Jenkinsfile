@@ -16,7 +16,13 @@ pipeline {
 
         stage('Aplicando testes') {
             steps {
-                echo 'Testes unitários...'
+                echo 'Rodando testes unitários...'
+                sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r requirements.txt
+                FLASK_ENV=testing python -m unittest discover -s . -p "test_*.py"
+                '''
             }
         }
     }
