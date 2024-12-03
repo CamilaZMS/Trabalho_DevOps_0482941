@@ -66,6 +66,28 @@ pipeline {
                 }
             }
         }
+
+        stage('Verificar Prometheus') {
+            steps {
+                echo 'Verificando o status do Prometheus...'
+                script {
+                    try {
+                        sh '''
+                            echo "Verificando Prometheus..."
+                            status=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:9090/-/ready)
+                            if [ "$status" -ne 200 ]; then
+                                echo "Prometheus não está acessível. Código HTTP: $status"
+                                exit 1
+                            fi
+                        '''
+                        echo 'Prometheus está funcionando corretamente.'
+                    } catch (Exception e) {
+                        echo "Erro ao verificar o monitoramento: ${e.getMessage()}"
+                        error "Falha na verificação do monitoramento."
+                    }
+                }
+            }
+        }
     }
 
     post {
