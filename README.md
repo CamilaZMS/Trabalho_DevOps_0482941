@@ -44,7 +44,7 @@ Este projeto é uma aplicação web desenvolvida para demonstrar práticas moder
 1. **Clonar o Repositório**
    ```bash
    git clone https://github.com/CamilaZMS/Trabalho_DevOps_0482941
-   cd devops-project
+   cd Trabalho_DevOps_0482941
    ```
 
 2. **Configurar Jenkins**
