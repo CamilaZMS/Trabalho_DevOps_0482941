@@ -2,7 +2,7 @@ services:
   mariadb:
     build:
       context: .
-      dockerfile: Dockerfile_mariadb
+      dockerfile: mariadb/Dockerfile_mariadb
     container_name: mariadb
     ports:
       - "3306:3306"
@@ -32,12 +32,52 @@ services:
       FLASK_DB_USER: flask_user
       FLASK_DB_PASSWORD: flask_password
       FLASK_DB_NAME: school_db
-      DEBUG_METRICS: "1" # Habilitar métricas mesmo no modo desenvolvimento
+      DEBUG_METRICS: "1"
+    networks:
+      - monitoring_net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - flask
+      - mysqld_exporter
+    networks:
+      - monitoring_net
+
+  mysqld_exporter:
+    image: prom/mysqld-exporter:latest
+    container_name: mysqld_exporter
+    ports:
+      - "9104:9104"
+    volumes:
+      - ./my.cnf:/etc/.my.cnf
+    command: --config.my-cnf=/etc/.my.cnf
+    depends_on:
+      - mariadb
+    networks:
+      - monitoring_net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
     networks:
       - monitoring_net
 
 volumes:
   db_data:
+  grafana_data:
 
 networks:
   monitoring_net:
