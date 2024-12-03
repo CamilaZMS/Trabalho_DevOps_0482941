@@ -58,10 +58,22 @@ Este projeto é uma aplicação web desenvolvida para demonstrar práticas moder
    - Branch: `main`
 
 4. **Construir e Executar**
-   ```bash
-   docker-compose up -d
-   ```
-# 🚀 Sistema de Gerenciamento de Alunos - Projeto DevOps
+Faça login no Jenkins em http://localhost:8080
+Localize a pipeline criada (por exemplo, Pipeline-Alunos)
+Clique em "Construir Agora" (ou "Build Now")
+Monitore a execução:
+
+Acompanhe os logs para verificar:
+
+Clonagem do repositório
+Execução de testes
+Build de imagens Docker
+Deploy dos serviços
+
+
+
+
+Verifique o status final da pipeline:
 
 ## 📊 Dashboard de Métricas
 
@@ -89,8 +101,6 @@ O projeto inclui um dashboard Grafana personalizado com duas métricas principai
 - **Ferramentas**: Prometheus + Grafana
 - **Versão do Dashboard**: 12
 
-[Restante do README anterior...]
-
 ## 🔍 Acessando Serviços
 
 | Serviço | URL                  
@@ -99,9 +109,7 @@ O projeto inclui um dashboard Grafana personalizado com duas métricas principai
 | Jenkins | `http://localhost:8080` 
 | Aplicação | `http://localhost:5000`
 
-
-
-## 🚨 Avisos
+## 🚨 Observações
 
 - Certifique-se de ter todas as dependências instaladas
 - Recomenda-se uso em ambiente Linux
